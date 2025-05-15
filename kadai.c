@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #define BUFSIZE 1024 //ファイルから読み込む一行の最大文字数
 #define MAX_SEQ_NUM 30 //一つの転写因子に対して与えられる結合部位配列の最大数
@@ -11,6 +12,8 @@ char g_motif[MAX_SEQ_NUM][BUFSIZE]; //転写因子の結合部位配列を保存
 
 int g_hindo[4][20];
 void hindotable(int seq_num);
+int pi[4][20];
+float si[4][20];
 
 struct promoter{
   char name[BUFSIZE];
@@ -70,13 +73,13 @@ int main(int argc, char* argv[]){
   printf("motif region:\n");
   for(int i = 0; i < seq_num; i++){
     printf("%s\n",g_motif[i]); //読み込んだ転写因子の結合部位配列を表示
-
-  for(int j = 0; j < 4; j++){
+    }
+    printf("\n"); 
+    for(int j = 0; j < 4; j++){
   for(int k = 0; k < 20; k++){
-    printf("{%d}",g_hindo[j][k]);
+    printf("{%f}", si[j][k]);
   }
   printf("\n");
-    }
     }
   int gene_num = read_promoter(argv[2]);  //２番目の引数で指定した遺伝子のプロモータ領域を読み込む
 
@@ -92,6 +95,17 @@ int main(int argc, char* argv[]){
 
 void hindotable(int seq_num)
 {
+    int a = 7519429;
+    int b = 4637676;
+    int c = 4637676;
+    int d = 7519429;
+    float total = a + b + c + d;
+    float q[4];
+    q[0] = a / total;
+    q[1] = b / total;
+    q[2] = c / total;
+    q[3] = d / total;
+    int k = 0;
 for(int i = 0; i < seq_num; i++){
 for(int j = 0; j < BUFSIZE; j++){
     if(g_motif[i][j] == 'A'){
@@ -107,8 +121,17 @@ for(int j = 0; j < BUFSIZE; j++){
         g_hindo[3][j]++;
     }
     else{
+        k = j;
         break;
     }
   } 
   }
+
+  for(int i = 0; i < 4; i++){
+  for(int j = 0; j < k; j++){
+    pi[i][j] = g_hindo[i][j] + 1;
+    si[i][j] = log10(pi[i][j]/q[i]);
+  } 
+  }
+   
 }
