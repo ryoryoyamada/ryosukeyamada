@@ -9,6 +9,9 @@
 
 char g_motif[MAX_SEQ_NUM][BUFSIZE]; //転写因子の結合部位配列を保存する配列
 
+int g_hindo[4][20];
+void hindotable(int seq_num);
+
 struct promoter{
   char name[BUFSIZE];
   char seq[BUFSIZE];
@@ -63,14 +66,20 @@ int read_promoter(char *filename){
 
 int main(int argc, char* argv[]){
   int seq_num = read_multi_seq(argv[1]); //１番目の引数で指定した転写因子の複数の結合部位配列を読み込む
-
+  hindotable(seq_num);
   printf("motif region:\n");
   for(int i = 0; i < seq_num; i++){
     printf("%s\n",g_motif[i]); //読み込んだ転写因子の結合部位配列を表示
+
+  for(int j = 0; j < 4; j++){
+  for(int k = 0; k < 20; k++){
+    printf("{%d}",g_hindo[j][k]);
   }
   printf("\n");
-
+    }
+    }
   int gene_num = read_promoter(argv[2]);  //２番目の引数で指定した遺伝子のプロモータ領域を読み込む
+
   
   printf("promoter_sequence:\n");
   for(int i = 0; i < gene_num; i++){
@@ -79,4 +88,27 @@ int main(int argc, char* argv[]){
   }
 
   return 0;
+}
+
+void hindotable(int seq_num)
+{
+for(int i = 0; i < seq_num; i++){
+for(int j = 0; j < BUFSIZE; j++){
+    if(g_motif[i][j] == 'A'){
+        g_hindo[0][j]++;
+    }
+    else if(g_motif[i][j] == 'C'){
+        g_hindo[1][j]++;
+    }
+    else if(g_motif[i][j] == 'G'){
+        g_hindo[2][j]++;
+    }
+    else if(g_motif[i][j] == 'T'){
+        g_hindo[3][j]++;
+    }
+    else{
+        break;
+    }
+  } 
+  }
 }
