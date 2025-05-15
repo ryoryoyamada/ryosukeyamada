@@ -14,6 +14,7 @@ int g_hindo[4][20];
 int hindotable(int seq_num);
 float pi[4][20];
 float si[4][20];
+float hit[BUFSIZE];
 
 struct promoter{
   char name[BUFSIZE];
@@ -88,14 +89,15 @@ int main(int argc, char* argv[]){
   printf("\n");
     }
   int gene_num = read_promoter(argv[2]);  //２番目の引数で指定した遺伝子のプロモータ領域を読み込む
-
+  int m = hittable(l, gene_num);
   
   printf("promoter_sequence:\n");
   for(int i = 0; i < gene_num; i++){
     printf(">%s\n", g_pro[i].name); //読み込んだプロモータ領域を表示
     printf("%s\n", g_pro[i].seq);
+    printf("%f\n", hit[i]);
   }
-
+  
   return 0;
 }
 
@@ -142,4 +144,30 @@ for(int j = 0; j < BUFSIZE; j++){
   } 
   }
 return k;
+}
+
+int hittable(int k, int gene_num)
+{
+int l = 0;
+for(int i = 0; i < gene_num; i++){
+for(int j = l; j < l + k; j++){
+    if(g_pro[i].seq[j] == 'A'){
+        hit[l] = + si[0][j];
+    }
+    else if(g_pro[i].seq[j] == 'C'){
+        hit[l] = + si[1][j];
+    }
+    else if(g_pro[i].seq[j] == 'G'){
+        hit[l] = + si[2][j];
+    }
+    else if(g_pro[i].seq[j] == 'T'){
+        hit[l] = + si[3][j];
+    }
+    if(l >= gene_num - k){
+        break;
+    }
+    l++;
+  } 
+}
+  return l;
 }
