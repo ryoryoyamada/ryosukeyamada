@@ -11,8 +11,8 @@
 char g_motif[MAX_SEQ_NUM][BUFSIZE]; //転写因子の結合部位配列を保存する配列
 
 int g_hindo[4][20];
-void hindotable(int seq_num);
-int pi[4][20];
+int hindotable(int seq_num);
+float pi[4][20];
 float si[4][20];
 
 struct promoter{
@@ -69,14 +69,20 @@ int read_promoter(char *filename){
 
 int main(int argc, char* argv[]){
   int seq_num = read_multi_seq(argv[1]); //１番目の引数で指定した転写因子の複数の結合部位配列を読み込む
-  hindotable(seq_num);
+  int l = hindotable(seq_num);
   printf("motif region:\n");
   for(int i = 0; i < seq_num; i++){
     printf("%s\n",g_motif[i]); //読み込んだ転写因子の結合部位配列を表示
     }
     printf("\n"); 
     for(int j = 0; j < 4; j++){
-  for(int k = 0; k < 20; k++){
+  for(int k = 0; k < l; k++){
+    printf("{%d}", g_hindo[j][k]);
+  }
+  printf("\n");
+    }
+    for(int j = 0; j < 4; j++){
+  for(int k = 0; k < l; k++){
     printf("{%f}", si[j][k]);
   }
   printf("\n");
@@ -93,7 +99,7 @@ int main(int argc, char* argv[]){
   return 0;
 }
 
-void hindotable(int seq_num)
+int hindotable(int seq_num)
 {
     int a = 7519429;
     int b = 4637676;
@@ -126,12 +132,14 @@ for(int j = 0; j < BUFSIZE; j++){
     }
   } 
   }
-
+  float tate = seq_num + 4;
+  float plus[4][k];
   for(int i = 0; i < 4; i++){
   for(int j = 0; j < k; j++){
-    pi[i][j] = g_hindo[i][j] + 1;
-    si[i][j] = log10(pi[i][j]/q[i]);
+    plus[i][j] = g_hindo[i][j] + 1;
+    pi[i][j] = plus[i][j] / tate;
+    si[i][j] = log(pi[i][j]/q[i]);
   } 
   }
-   
+return k;
 }
