@@ -1,0 +1,9 @@
+{
+  "makefile.launchConfigurations": [
+    {
+      "cwd": "/workspaces/print",
+      "binaryPath": "/workspaces/print/print",
+      "binaryArgs": []
+    }
+  ]
+}

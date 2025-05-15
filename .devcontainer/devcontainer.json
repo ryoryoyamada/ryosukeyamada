@@ -1,0 +1,12 @@
+{
+  "name": "print",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools-extension-pack",
+        "twxs.cmake",
+        "ms-vscode.cmake-tools"
+      ]
+    }
+  }
+}
