@@ -25,6 +25,8 @@ struct promoter{
   char seq[BUFSIZE];
 }g_pro[MAX_GENE_NUM]; //遺伝子のプロモータ領域を保存する構造体
 
+char randumseq[BUFSIZE];
+
 //グローバル変数はローカル変数と区別するため、全部大文字にするかg_を先頭につけるのが一般的
 
 int read_multi_seq(char* filename){
@@ -114,20 +116,24 @@ int main(int argc, char* argv[]){
 
   for(int i=0; i<100; i++){
 if((float)rand() / RAND_MAX <q[0]){
-  printf("A");
+  randumseq[i] = 'A';
 }
 else if((float)rand() / RAND_MAX >= q[0] && rand() / (float)RAND_MAX < (q[0] + q[1])){
-  printf("C");
+  randumseq[i] = 'C';
 }
 else if((float)rand() / RAND_MAX >= (q[0] + q[1]) && (float)rand() / RAND_MAX < (q[0] + q[1] + q[2])){
-  printf("G");
+  randumseq[i] = 'G';
 }
 else if(RAND_MAX >= (q[0] + q[1] + q[2])){
-  printf("T");
+  randumseq[i] = 'T';
 }
 }
 printf("\n");
 
+  for(int i=0; i<100; i++){
+  printf("%c", randumseq[i]);
+  }
+  printf("\n");
   return 0;
 }
 
