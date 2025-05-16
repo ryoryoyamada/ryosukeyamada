@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -72,6 +71,7 @@ int read_promoter(char *filename){
 }
 
 int main(int argc, char* argv[]){
+printf("%d\n", rand());
   int seq_num = read_multi_seq(argv[1]); //１番目の引数で指定した転写因子の複数の結合部位配列を読み込む
   int k = hindotable(seq_num);
   printf("motif region:\n");
@@ -94,8 +94,7 @@ int main(int argc, char* argv[]){
   int gene_num = read_promoter(argv[2]);  //２番目の引数で指定した遺伝子のプロモータ領域を読み込む
   int l = hittable(k, gene_num);
   
-  printf("Motif:%s\n", argv[1]+6);
-  printf("\n");
+  
   for(int i = 0; i < gene_num; i++){
   for(int j = 0; j < l; j++){
     if(hit[i][j] >= SIKII){
@@ -183,5 +182,3 @@ for(int j = l; j < l + k; j++){
 }
   return l;
 }
-
-
