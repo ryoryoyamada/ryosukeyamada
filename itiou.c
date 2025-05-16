@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 
 #define BUFSIZE 1024 //ファイルから読み込む一行の最大文字数
 #define MAX_SEQ_NUM 30 //一つの転写因子に対して与えられる結合部位配列の最大数
@@ -17,6 +18,7 @@ int hittable(int k, int gene_num);
 float pi[NUC_NUM][MAX_SEQ_NUM];
 float si[NUC_NUM][MAX_SEQ_NUM];
 float hit[MAX_SEQ_NUM][BUFSIZE];
+float q[4];
 
 struct promoter{
   char name[BUFSIZE];
@@ -71,7 +73,7 @@ int read_promoter(char *filename){
 }
 
 int main(int argc, char* argv[]){
-printf("%d\n", rand());
+
   int seq_num = read_multi_seq(argv[1]); //１番目の引数で指定した転写因子の複数の結合部位配列を読み込む
   int k = hindotable(seq_num);
   printf("motif region:\n");
@@ -109,6 +111,23 @@ printf("%d\n", rand());
   }
     }
   }
+
+  for(int i=0; i<100; i++){
+if((float)rand() / RAND_MAX <q[0]){
+  printf("A");
+}
+else if((float)rand() / RAND_MAX >= q[0] && rand() / (float)RAND_MAX < (q[0] + q[1])){
+  printf("C");
+}
+else if((float)rand() / RAND_MAX >= (q[0] + q[1]) && (float)rand() / RAND_MAX < (q[0] + q[1] + q[2])){
+  printf("G");
+}
+else if(RAND_MAX >= (q[0] + q[1] + q[2])){
+  printf("T");
+}
+}
+printf("\n");
+
   return 0;
 }
 
@@ -119,7 +138,6 @@ int hindotable(int seq_num)
     int c = 4637676;
     int d = 7519429;
     float total = a + b + c + d;
-    float q[4];
     q[0] = a / total;
     q[1] = b / total;
     q[2] = c / total;
