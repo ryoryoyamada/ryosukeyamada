@@ -7,14 +7,17 @@
 #define BUFSIZE 1024 //ファイルから読み込む一行の最大文字数
 #define MAX_SEQ_NUM 30 //一つの転写因子に対して与えられる結合部位配列の最大数
 #define MAX_GENE_NUM 8 /*与えられるプロモータ領域の最大遺伝子数*/
+#define NUC_NUM 4
+#define SIKII 5
 
 char g_motif[MAX_SEQ_NUM][BUFSIZE]; //転写因子の結合部位配列を保存する配列
 
-int g_hindo[4][20];
+int g_hindo[NUC_NUM][MAX_SEQ_NUM];
 int hindotable(int seq_num);
-float pi[4][20];
-float si[4][20];
-float hit[BUFSIZE];
+int hittable(int k, int gene_num);
+float pi[NUC_NUM][MAX_SEQ_NUM];
+float si[NUC_NUM][MAX_SEQ_NUM];
+float hit[MAX_SEQ_NUM][BUFSIZE];
 
 struct promoter{
   char name[BUFSIZE];
@@ -70,34 +73,42 @@ int read_promoter(char *filename){
 
 int main(int argc, char* argv[]){
   int seq_num = read_multi_seq(argv[1]); //１番目の引数で指定した転写因子の複数の結合部位配列を読み込む
-  int l = hindotable(seq_num);
+  int k = hindotable(seq_num);
   printf("motif region:\n");
   for(int i = 0; i < seq_num; i++){
     printf("%s\n",g_motif[i]); //読み込んだ転写因子の結合部位配列を表示
     }
     printf("\n"); 
-    for(int j = 0; j < 4; j++){
-  for(int k = 0; k < l; k++){
-    printf("{%d}", g_hindo[j][k]);
+    for(int i = 0; i < NUC_NUM; i++){
+  for(int j = 0; j < k; j++){
+    printf("{%d}", g_hindo[i][j]);
   }
   printf("\n");
     }
-    for(int j = 0; j < 4; j++){
-  for(int k = 0; k < l; k++){
-    printf("{%f}", si[j][k]);
+  for(int i = 0; i < NUC_NUM; i++){
+  for(int j = 0; j < k; j++){
+    printf("{%f}", si[i][j]);
   }
   printf("\n");
     }
   int gene_num = read_promoter(argv[2]);  //２番目の引数で指定した遺伝子のプロモータ領域を読み込む
-  int m = hittable(l, gene_num);
+  int l = hittable(k, gene_num);
   
-  printf("promoter_sequence:\n");
+  
   for(int i = 0; i < gene_num; i++){
-    printf(">%s\n", g_pro[i].name); //読み込んだプロモータ領域を表示
-    printf("%s\n", g_pro[i].seq);
-    printf("%f\n", hit[i]);
+  for(int j = 0; j < l; j++){
+    if(hit[i][j] >= SIKII){
+        printf("pro:%s\n", g_pro[i].name); //読み込んだプロモータ領域を表示
+        printf("pos:%d\n", j+1);
+        printf("hit(");
+      for(int a = j; a < j+k; a++){
+        printf("%c", g_pro[i].seq[a]);
+    }
+    printf(")=%.2f", hit[i][j]);
+    printf("\n\n");
   }
-  
+    }
+  }
   return 0;
 }
 
@@ -134,9 +145,9 @@ for(int j = 0; j < BUFSIZE; j++){
     }
   } 
   }
-  float tate = seq_num + 4;
-  float plus[4][k];
-  for(int i = 0; i < 4; i++){
+  float tate = seq_num + NUC_NUM;
+  float plus[NUC_NUM][k];
+  for(int i = 0; i < NUC_NUM; i++){
   for(int j = 0; j < k; j++){
     plus[i][j] = g_hindo[i][j] + 1;
     pi[i][j] = plus[i][j] / tate;
@@ -150,24 +161,25 @@ int hittable(int k, int gene_num)
 {
 int l = 0;
 for(int i = 0; i < gene_num; i++){
+for(l = 0; l <= strlen(g_pro[i].seq) - k; l++){
+  int m = 0;
 for(int j = l; j < l + k; j++){
     if(g_pro[i].seq[j] == 'A'){
-        hit[l] = + si[0][j];
+        hit[i][l] += si[0][m];
     }
     else if(g_pro[i].seq[j] == 'C'){
-        hit[l] = + si[1][j];
+        hit[i][l] += si[1][m];
     }
     else if(g_pro[i].seq[j] == 'G'){
-        hit[l] = + si[2][j];
+        hit[i][l] += si[2][m];
     }
     else if(g_pro[i].seq[j] == 'T'){
-        hit[l] = + si[3][j];
+        hit[i][l] += si[3][m];
     }
-    if(l >= gene_num - k){
-        break;
-    }
-    l++;
+    m++;
   } 
+}
 }
   return l;
 }
+
