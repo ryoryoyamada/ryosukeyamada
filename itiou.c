@@ -20,6 +20,8 @@ float pi[NUC_NUM][MAX_SEQ_NUM];
 float si[NUC_NUM][MAX_SEQ_NUM];
 float hit[MAX_SEQ_NUM][BUFSIZE];
 float q[4];
+float hitsum = 0.0;
+float num = 0.0;
 
 struct promoter{
   char name[BUFSIZE];
@@ -112,33 +114,48 @@ int main(int argc, char* argv[]){
     printf(")=%.2f", hit[i][j]);
     printf("\n\n");
   }
+  hit[i][j] = 0;
     }
   }
-
+  srand((unsigned int)time(NULL));
   for(int i=0; i<10; i++){
   for(int j=0; j<400; j++){
-if((float)rand() / RAND_MAX <q[0]){
+ float x = (float)rand() / (float)RAND_MAX;
+if(x <q[0]){
   randomseq[i][j] = 'A';
 }
-else if((float)rand() / RAND_MAX >= q[0] && rand() / (float)RAND_MAX < (q[0] + q[1])){
+else if(x >= q[0] && x < (q[0] + q[1])){
   randomseq[i][j] = 'C';
 }
-else if((float)rand() / RAND_MAX >= (q[0] + q[1]) && (float)rand() / RAND_MAX < (q[0] + q[1] + q[2])){
+else if(x >= (q[0] + q[1]) && x < (q[0] + q[1] + q[2])){
   randomseq[i][j] = 'G';
 }
-else if(RAND_MAX >= (q[0] + q[1] + q[2])){
+else if(x >= (q[0] + q[1] + q[2])){
   randomseq[i][j] = 'T';
 }
 }
 }
 printf("\n");
   
+printf("%s\n", randomseq[0]);
+printf("%f\n", q[0]);
 
-  for(int i = 0; i < gene_num; i++){
+
+  for(int i = 0; i < 10; i++){
   int l = hittable(k, gene_num, randomseq[i], i);
   for(int j = 0; j < l; j++){
-    printf("hit=%.2f", hit[i][j]);
-    printf("\n\n");
+     hitsum += hit[i][j];
+     num++;
+  }
+  }
+  float average = hitsum / num; 
+  printf("%f\n,", average);
+
+  for(int i = 0; i < 10; i++){
+  int l = hittable(k, gene_num, randomseq[i], i);
+  for(int j = 0; j < l; j++){
+     hitsum += hit[i][j];
+     num++;
   }
   }
 
@@ -214,3 +231,4 @@ for(int j = l; j < l + k; j++){
 }
   return l;
 }
+
