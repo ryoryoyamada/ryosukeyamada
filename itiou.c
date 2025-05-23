@@ -21,6 +21,7 @@ float si[NUC_NUM][MAX_SEQ_NUM];
 float hit[MAX_SEQ_NUM][BUFSIZE];
 float q[4];
 float hitsum = 0.0;
+float hitsumtwo = 0.0;
 float num = 0.0;
 
 struct promoter{
@@ -136,28 +137,22 @@ else if(x >= (q[0] + q[1] + q[2])){
 }
 }
 printf("\n");
-  
-printf("%s\n", randomseq[0]);
-printf("%f\n", q[0]);
 
 
   for(int i = 0; i < 10; i++){
   int l = hittable(k, gene_num, randomseq[i], i);
   for(int j = 0; j < l; j++){
      hitsum += hit[i][j];
+     hitsumtwo += hit[i][j] * hit[i][j];
      num++;
   }
   }
   float average = hitsum / num; 
-  printf("%f\n,", average);
+  float std = sqrt(hitsumtwo / num - average * average);
+  printf("average:%f\n", average);
+  printf("std:%f\n", std);
 
-  for(int i = 0; i < 10; i++){
-  int l = hittable(k, gene_num, randomseq[i], i);
-  for(int j = 0; j < l; j++){
-     hitsum += hit[i][j];
-     num++;
-  }
-  }
+
 
   return 0;
 }
