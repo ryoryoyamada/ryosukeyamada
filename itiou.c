@@ -82,26 +82,10 @@ int main(int argc, char* argv[]){
 
   int seq_num = read_multi_seq(argv[1]); //１番目の引数で指定した転写因子の複数の結合部位配列を読み込む
   int k = hindotable(seq_num);
-  printf("motif region:\n");
-  for(int i = 0; i < seq_num; i++){
-    printf("%s\n",g_motif[i]); //読み込んだ転写因子の結合部位配列を表示
-    }
-    printf("\n"); 
-    for(int i = 0; i < NUC_NUM; i++){
-  for(int j = 0; j < k; j++){
-    printf("{%d}", g_hindo[i][j]);
-  }
-  printf("\n");
-    }
-  for(int i = 0; i < NUC_NUM; i++){
-  for(int j = 0; j < k; j++){
-    printf("{%f}", si[i][j]);
-  }
-  printf("\n");
-    }
   int gene_num = read_promoter(argv[2]);  //２番目の引数で指定した遺伝子のプロモータ領域を読み込む
   
-  
+  printf("Motif:%s\n", argv[1]+6);
+  printf("\n");
   for(int i = 0; i < gene_num; i++){
   int l = hittable(k, gene_num, g_pro[i].seq, i);
   for(int j = 0; j < l; j++){

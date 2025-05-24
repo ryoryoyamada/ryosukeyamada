@@ -8,7 +8,7 @@
 #define MAX_SEQ_NUM 30 //一つの転写因子に対して与えられる結合部位配列の最大数
 #define MAX_GENE_NUM 8 /*与えられるプロモータ領域の最大遺伝子数*/
 #define NUC_NUM 4
-#define SIKII 5
+#define SIKII 5.942906004
 
 char g_motif[MAX_SEQ_NUM][BUFSIZE]; //転写因子の結合部位配列を保存する配列
 
@@ -74,23 +74,7 @@ int read_promoter(char *filename){
 int main(int argc, char* argv[]){
   int seq_num = read_multi_seq(argv[1]); //１番目の引数で指定した転写因子の複数の結合部位配列を読み込む
   int k = hindotable(seq_num);
-  printf("motif region:\n");
-  for(int i = 0; i < seq_num; i++){
-    printf("%s\n",g_motif[i]); //読み込んだ転写因子の結合部位配列を表示
-    }
-    printf("\n"); 
-    for(int i = 0; i < NUC_NUM; i++){
-  for(int j = 0; j < k; j++){
-    printf("{%d}", g_hindo[i][j]);
-  }
-  printf("\n");
-    }
-  for(int i = 0; i < NUC_NUM; i++){
-  for(int j = 0; j < k; j++){
-    printf("[%f]", si[i][j]);
-  }
-  printf("\n");
-    }
+  
   int gene_num = read_promoter(argv[2]);  //２番目の引数で指定した遺伝子のプロモータ領域を読み込む
   int l = hittable(k, gene_num);
   
