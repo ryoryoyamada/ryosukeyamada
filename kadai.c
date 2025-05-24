@@ -87,7 +87,7 @@ int main(int argc, char* argv[]){
     }
   for(int i = 0; i < NUC_NUM; i++){
   for(int j = 0; j < k; j++){
-    printf("{%f}", si[i][j]);
+    printf("[%f]", si[i][j]);
   }
   printf("\n");
     }
@@ -115,16 +115,6 @@ int main(int argc, char* argv[]){
 
 int hindotable(int seq_num)
 {
-    int a = 7519429;
-    int b = 4637676;
-    int c = 4637676;
-    int d = 7519429;
-    float total = a + b + c + d;
-    float q[4];
-    q[0] = a / total;
-    q[1] = b / total;
-    q[2] = c / total;
-    q[3] = d / total;
     int k = 0;
 for(int i = 0; i < seq_num; i++){
 for(int j = 0; j < BUFSIZE; j++){
@@ -146,6 +136,18 @@ for(int j = 0; j < BUFSIZE; j++){
     }
   } 
   }
+
+    int a = 7519429;
+    int b = 4637676;
+    int c = 4637676;
+    int d = 7519429;
+    float total = a + b + c + d;
+    float q[4];
+    q[0] = a / total;
+    q[1] = b / total;
+    q[2] = c / total;
+    q[3] = d / total;
+
   float tate = seq_num + NUC_NUM;
   float plus[NUC_NUM][k];
   for(int i = 0; i < NUC_NUM; i++){
