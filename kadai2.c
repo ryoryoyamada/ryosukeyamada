@@ -8,7 +8,7 @@
 #define MAX_SEQ_NUM 30 //一つの転写因子に対して与えられる結合部位配列の最大数
 #define MAX_GENE_NUM 8 /*与えられるプロモータ領域の最大遺伝子数*/
 #define NUC_NUM 4
-#define SIKII 5
+#define SIKII 7
 #define RANDOMSUM 10
 
 char g_motif[MAX_SEQ_NUM][BUFSIZE]; //転写因子の結合部位配列を保存する配列
